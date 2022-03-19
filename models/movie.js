@@ -16,18 +16,26 @@ const movieSchema = new mongoose.Schema({
   numberInStock: {
     type: Number,
     required: true,
+    min: 0,
+    max: 255,
   },
-  dailyRentalRate: { Number, default: 0 },
+  dailyRentalRate: {
+    type: Number,
+    required: false,
+    default: 0,
+    min: 0,
+    max: 255,
+  },
 });
 
 const Movie = mongoose.model("Movie", movieSchema);
 
 function validateMovie(movie) {
   const schema = {
-    title: Joi.string().min(3).required(),
+    title: Joi.string().min(3).max(150).required(),
     genre: Joi.string().min(1).required(),
-    numberInStock: Joi.number().required(),
-    //dailyRentalRate: Joi.number(),
+    numberInStock: Joi.number().min(0).required(),
+    dailyRentalRate: Joi.number().min(0).required(),
   };
 
   return Joi.validate(movie, schema);
